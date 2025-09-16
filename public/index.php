@@ -11,8 +11,6 @@ require_once __DIR__.'/../app/controllers/AlmacenController.php';
 require_once __DIR__.'/../app/lib/util.php';
 
 $r = $_GET['r'] ?? 'home';
-
-// Rutas públicas
 $public = ['auth/login'];
 
 if (!in_array($r, $public)) {
@@ -21,7 +19,7 @@ if (!in_array($r, $public)) {
 }
 
 switch ($r) {
-  // Home / Auth
+  // Home
   case 'home':           home_index(); break;
   case 'auth/login':     auth_login(); break;
   case 'auth/logout':    auth_logout(); break;

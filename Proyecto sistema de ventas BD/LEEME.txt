@@ -11,6 +11,7 @@ Instalación rápida:
 3) Edita app/config/env.php con tus credenciales MySQL.
 4) Abre: http://localhost:8080/sistema_ventas_php/public/index.php?r=auth/login
    Usuario seed: admin / admin (si ejecutaste seeds.sql; reemplaza hash en producción).
+   Si xamp corre en el puerto 80 o otro a ellecion cambiar bd.phpy env.php
 5) Instalar Coposer para ejecutar programa
 6) Uba vez instaldo usar esta comando en powershell:cd C:\xampp\htdocs\sistema_ventas_php composer require dompdf/dompdf
 

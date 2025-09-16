@@ -1,0 +1,7 @@
+public/index.php → login
+
+app/controllers/* → lógica por módulo.
+
+app/lib/db.php → PDO central; auth.php → login + asistencia; session.php → CSRF.
+
+migrations/schema.sql / seeds.sql → tablas, vistas y datos demo.

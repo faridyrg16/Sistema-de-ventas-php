@@ -1,0 +1,84 @@
+@startuml diagrama_entidad_relacion
+!theme plain
+skinparam dpi 150
+
+entity Cliente {
+  *idCliente: INT           -- PK
+  nombre: VARCHAR
+  dni: VARCHAR
+  email: VARCHAR
+  telefono: VARCHAR
+}
+
+entity Vendedor {
+  *idVendedor: INT          -- PK
+  nombre: VARCHAR
+  dni: VARCHAR
+  codigo: VARCHAR
+}
+
+entity Usuario {
+  *idUsuario: INT           -- PK
+  username: VARCHAR
+  password_hash: VARCHAR
+  rol: ENUM('ADMIN','VENDEDOR','CAJERO')
+  idVendedor: INT <<FK>>
+}
+
+entity Categoria {
+  *idCategoria: INT         -- PK
+  nombre: VARCHAR
+}
+
+entity Producto {
+  *idProducto: INT          -- PK
+  nombre: VARCHAR
+  precio: DECIMAL(10,2)
+  stock: INT
+  idCategoria: INT <<FK>>
+}
+
+entity Venta {
+  *idVenta: INT             -- PK
+  fecha: DATE
+  total: DECIMAL(10,2)
+  idCliente: INT <<FK>>
+  idVendedor: INT <<FK>>
+}
+
+entity DetalleVenta {
+  *idDetalle: INT           -- PK
+  cantidad: INT
+  precioUnitario: DECIMAL(10,2)
+  subtotal: DECIMAL(10,2)
+  idVenta: INT <<FK>>
+  idProducto: INT <<FK>>
+}
+
+entity Asistencia {
+  *idAsistencia: INT        -- PK
+  fechaEntrada: DATETIME
+  fechaSalida: DATETIME
+  idVendedor: INT <<FK>>
+}
+
+entity Consulta {
+  *idConsulta: INT          -- PK
+  fecha: DATETIME
+  nota: TEXT
+  idCliente: INT <<FK>>
+  idVendedor: INT <<FK>>
+}
+
+' ===== Relaciones y cardinalidades =====
+Cliente   ||--o{ Venta        : idCliente
+Vendedor  ||--o{ Venta        : idVendedor
+Venta     ||--o{ DetalleVenta : idVenta
+Producto  ||--o{ DetalleVenta : idProducto
+Categoria ||--o{ Producto     : idCategoria
+Vendedor  ||--o{ Asistencia   : idVendedor
+Cliente   ||--o{ Consulta     : idCliente
+Vendedor  |o--o{ Consulta     : idVendedor  ' vendedor puede ser opcional en la consulta
+Usuario   }|--|| Vendedor     : idVendedor  ' 1:1
+
+@enduml

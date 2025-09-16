@@ -1,0 +1,72 @@
+@startuml clases;
+skinparam classAttributeIconSize 0
+
+abstract class Persona {
+  +id: int
+  +nombre: string
+  +documento: string
+  +direccion: string
+  +telefono: string
+  +email: string
+}
+
+class Cliente {
+  +tipo: string
+}
+
+class Vendedor {
+  +codigo: string
+  +estado: string
+}
+
+class Usuario {
+  +id: int
+  +username: string
+  +passwordHash: string
+  +rol: enum {ADMIN | VENDEDOR}
+  +activo: bool
+}
+
+class Categoria {
+  +id: int
+  +nombre: string
+  +estado: bool
+}
+
+class Producto {
+  +id: int
+  +nombre: string
+  +precio: decimal
+  +stock: int
+  +estado: bool
+}
+
+class Venta {
+  +id: int
+  +fecha: datetime
+  +subtotal: decimal
+  +igv: decimal
+  +total: decimal
+  +estado: enum {EMITIDA | ANULADA}
+}
+
+class DetalleVenta {
+  +id: int
+  +cantidad: int
+  +precioUnitario: decimal
+  +descuento: decimal
+  +importe: decimal
+}
+
+Persona <|-- Cliente
+Persona <|-- Vendedor
+
+Categoria "1" -- "0..*" Producto : clasifica >
+Producto "1" -- "0..*" DetalleVenta : se vende en >
+Venta "1" -- "1..*" DetalleVenta : contiene >
+Cliente "1" -- "0..*" Venta : compra >
+Vendedor "1" -- "0..*" Venta : emite >
+Usuario "1" -- "1" Vendedor : pertenece >
+Usuario "1" -- "0..*" Venta : registra >
+
+@enduml

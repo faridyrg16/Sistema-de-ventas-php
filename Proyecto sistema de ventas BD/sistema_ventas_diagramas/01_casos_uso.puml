@@ -1,0 +1,34 @@
+@startuml casos_uso;
+left to right direction
+actor Administrador as Admin
+actor Vendedor
+actor Cliente
+
+rectangle "Sistema de Ventas" {
+  usecase "Gestionar productos y categorías\n(CRUD)" as UC_Prod
+  usecase "Gestionar clientes\n(CRUD)" as UC_Clientes
+  usecase "Gestionar vendedores y usuarios\n(CRUD + roles)" as UC_Usuarios
+  usecase "Iniciar sesión" as UC_Login
+  usecase "Registrar asistencia" as UC_Asistencia
+  usecase "Registrar venta\n(carrito, totales, descuento de stock)" as UC_Venta
+  usecase "Consultar historial\n(por fecha/cliente/vendedor)" as UC_Historial
+  usecase "Generar reportes y exportaciones" as UC_Reportes
+}
+
+Admin --> UC_Prod
+Admin --> UC_Clientes
+Admin --> UC_Usuarios
+Admin --> UC_Reportes
+Admin --> UC_Historial
+
+Vendedor --> UC_Login
+Vendedor --> UC_Asistencia
+Vendedor --> UC_Venta
+Vendedor --> UC_Historial
+
+Cliente --> UC_Historial
+
+UC_Venta .> UC_Prod : «incluye»
+(consulta stock)
+UC_Usuarios .> UC_Login : «incluye»
+@enduml

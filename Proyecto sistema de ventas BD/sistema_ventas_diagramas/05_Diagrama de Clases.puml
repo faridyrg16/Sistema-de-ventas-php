@@ -1,0 +1,95 @@
+@startuml diagrama_clases_sistema_ventas
+skinparam classAttributeIconSize 0
+skinparam dpi 150
+
+' ===== Clases base =====
+abstract class Persona {
+  +id: int
+  +nombre: string
+  +dni: string
+}
+
+class Cliente {
+  +email: string
+  +telefono: string
+}
+
+class Vendedor {
+  +codigo: string
+}
+
+class Usuario {
+  +idUsuario: int
+  +username: string
+  +passwordHash: string
+  +rol: Rol
+}
+
+enum Rol {
+  ADMIN
+  VENDEDOR
+  CAJERO
+}
+
+class Categoria {
+  +idCategoria: int
+  +nombre: string
+}
+
+class Producto {
+  +idProducto: int
+  +nombre: string
+  +precio: decimal
+  +stock: int
+}
+
+class Venta {
+  +idVenta: int
+  +fecha: date
+  +total: decimal
+}
+
+class DetalleVenta {
+  +idDetalle: int
+  +cantidad: int
+  +precioUnitario: decimal
+  +subtotal: decimal
+}
+
+class Asistencia {
+  +idAsistencia: int
+  +fechaEntrada: datetime
+  +fechaSalida: datetime
+}
+
+class Consulta {
+  +idConsulta: int
+  +fecha: datetime
+  +nota: string
+}
+
+' ===== Herencias =====
+Persona <|-- Cliente
+Persona <|-- Vendedor
+
+' ===== Relaciones principales =====
+' Credencial del vendedor
+Vendedor "1" -- "1" Usuario : credencial
+
+' Catálogo
+Categoria "1" <-- " * " Producto
+
+' Ventas
+Venta "1" -- " * " DetalleVenta
+Producto "1" <-- " * " DetalleVenta
+Cliente "1" --> " * " Venta : realiza
+Vendedor "1" --> " * " Venta : atiende
+
+' Asistencia del vendedor
+Vendedor "1" --> " * " Asistencia
+
+' Consultas (cliente consultado)
+Cliente "1" --> " * " Consulta
+Vendedor "0..1" --> " * " Consulta : responde
+
+@enduml

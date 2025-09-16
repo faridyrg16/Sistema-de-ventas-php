@@ -1,0 +1,26 @@
+@startuml arquitectura;
+skinparam componentStyle rectangle
+title Arquitectura General (Capas)
+
+rectangle "Presentación" as UI {
+  [Vistas PHP / HTML] as Vistas
+}
+
+rectangle "Lógica de Negocio" as BL {
+  [Controladores] as Ctrl
+  [Servicios] as Svc
+  [Repositorios] as Repo
+}
+
+database "Datos (MySQL)" as DB
+
+Vistas --> Ctrl
+Ctrl --> Svc
+Svc --> Repo
+Repo --> DB
+
+' Integraciones / exportación
+[Exportador CSV/XLS/PDF] as Exp
+Svc --> Exp
+
+@enduml

@@ -1,0 +1,25 @@
+@startuml secuencia_registrar_venta;
+title Secuencia: Registrar Venta
+actor Vendedor
+participant "UI" as UI
+participant "Controlador" as C
+participant "Servicio" as S
+participant "Repositorio" as R
+database "BD" as DB
+
+Vendedor -> UI : Escanear/seleccionar productos\n(cantidad, precio, descuento)
+UI -> C : POST /ventas {carrito, cliente, vendedor}
+C -> S : validar(carrito), calcularTotales()
+S -> R : verificarStock(productos)
+R -> DB : SELECT stock FROM productos WHERE id IN (...)
+DB --> R : stock disponible
+R --> S : ok
+S -> R : registrarVenta(cabecera, detalles)
+R -> DB : INSERT venta + detalles\nUPDATE productos SET stock = stock - cantidad
+DB --> R : ids generados
+R --> S : {idVenta, totales}
+S --> C : confirmación
+C --> UI : 200 OK {idVenta, totales}
+UI --> Vendedor : Ticket/boleta y confirmación
+
+@enduml

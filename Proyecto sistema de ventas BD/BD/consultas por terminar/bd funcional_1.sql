@@ -105,8 +105,18 @@ CREATE TABLE detalle_venta (
     FOREIGN KEY (idproducto) REFERENCES producto(idproducto)
     ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-//TRIGGERS//
 
+CREATE TABLE asistencia (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  idVendedor INT NULL,
+  login_ts DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  login_date DATE GENERATED ALWAYS AS (CAST(login_ts AS DATE)) STORED,
+  UNIQUE KEY ux_asistencia_user_day (idVendedor, login_date),
+  CONSTRAINT fk_asistencia_vendedor
+    FOREIGN KEY (idVendedor) REFERENCES vendedor(idVendedor)
+    ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+--trigers para asistencia
 DELIMITER $$
 DROP TRIGGER IF EXISTS trg_mov_bi_valida_salida $$
 CREATE TRIGGER trg_mov_bi_valida_salida
